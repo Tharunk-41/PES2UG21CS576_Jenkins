@@ -1,33 +1,36 @@
 pipeline {
-  agent any 
-  stages {
-    stage('Build') {
-      steps {
-        sh 'mvn clean install' 
-        echo 'Build Stage Successful'
-      }
+    agent any
+
+    stages {
+        stage('Clone repository') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/Tharunk-41/PES2UG21CS576_Jenkins']]])
+            }
+        }
+
+        stage('Build') {
+            steps {
+                build 'PES2UG21CS576-1'
+                sh 'g++ main.cpp -o output'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh './output'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploy'
+            }
+        }
     }
-    stage('Test') {
-      steps {
-        sh 'mvn test' 
-        echo 'Test Stage Successful' 
-        post {
-          always {
-            junit 'target/surefire-reports/*.xml'
-          }
-        }      
-      }
+
+    post {
+        failure {
+            error 'Pipeline failed'
+        }
     }
-    stage('Deploy') {
-      steps {
-        sh 'mvn deploy' 
-        echo 'Deployment Successful'
-      }
-    }
-  }
-  post {
-    failure {
-      echo 'Pipeline failed'
-    }
-  }
 }
