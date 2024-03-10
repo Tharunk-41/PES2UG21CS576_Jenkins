@@ -24,9 +24,10 @@ pipeline {
       echo 'Deployment Successful'
     ｝
   }
-  post {
-    failure {
-      echo 'Pipeline failed'
-    }
+}
+post {
+  failure {
+    echo 'Pipeline failed'
   }
+}
 }
