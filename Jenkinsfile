@@ -8,7 +8,7 @@ stages {
   stage('Clone repository') {
     steps {
       git branch: 'main',
-      url: 'https://github.com/<user>/‹repo>.git'
+      url: 'https://github.com/Tharunk-41/PES2UG21CS576_Jenkins.git'
       ｝
   stage('Install dependencies') {
     steps {
